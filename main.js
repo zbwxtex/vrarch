@@ -17,6 +17,10 @@ var output;
 if(input.endsWith('.varch')) {
 	output = input.replace('.varch', '');
 	var data = fs.readFileSync(input);
+	data = zlib.brotliDecompressSync(data);
+	data = zlib.inflateRawSync(data);
+	data = zlib.gunzipSync(data);
+	data = Buffer.from(lzma.decompress(data));
 	fs.writeFileSync(output, data);
 } else {
 	output = input + '.varch';
